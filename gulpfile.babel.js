@@ -45,6 +45,10 @@ gulp.task('lint', () =>
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
 );
 
+gulp.task('libs', () =>
+  gulp.src('app/lib/**/*')
+    .pipe(gulp.dest('dist/lib')));
+
 // Optimize images
 gulp.task('images', () =>
   gulp.src('app/images/**/*')
@@ -196,7 +200,7 @@ gulp.task('serve:dist', ['default'], () =>
 // Build production files, the default task
 gulp.task('default', ['clean'], cb =>
   runSequence(
-    'styles',
+    'libs', 'styles',
     ['lint', 'html', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
