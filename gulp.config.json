@@ -1,0 +1,84 @@
+{
+  "input": {
+    "source_root": "app/*",
+    "source_sass": "app/**/*.scss",
+    "source_sass_main": "app/styles/sass/base.scss",
+    "source_css_main": "app/styles/main.css",
+    "source_copy": [
+      "!app/lib",
+      "!app/*.html",
+      "!app/worker",
+      "app/*",
+      "node_modules/apache-server-configs/dist/.htaccess"
+    ],
+    "lib_sass": "app/lib/angular-material/angular-material.scss",
+    "modules_js": [
+      "app/**/widgets.module.js",
+      "app/**/services.module.js",
+      "app/**/libraries.module.js",
+      "app/**/app.module.js",
+      "app/**/*.module.js"
+    ],
+    "order": {
+      "scripts": [
+        "app/**/*.routes.js",
+        "app/**/*.service.js",
+        "app/**/*.controller.js"
+      ],
+      "modules": [
+        "app/**/*.routes.js",
+        "app/**/*.service.js",
+        "app/**/*.controller.js"
+      ]
+    },
+    "source_js": [
+      "!app/lib/**",
+      "!app/worker/**",
+      "!app/**/*.spec.js",
+      "!app/**/*.mock.js",
+      "app/**/*.routes.js",
+      "app/**/*.service.js",
+      "app/**/*.controller.js"
+    ],
+    "lib_js": [
+      "app/lib/angular/angular.js",
+      "app/lib/angular-aria/angular-aria.js",
+      "app/lib/angular-animate/angular-animate.js",
+      "app/lib/angular-messages/angular-messages.js",
+      "app/lib/angular-ui-router/release/angular-ui-router.js",
+      "app/lib/angular-material/angular-material.js"
+    ],
+    "html": "app/**/*.html",
+    "images": [
+      "app/images/*"
+    ],
+    "icons": "https://fonts.googleapis.com/icon?family=Material+Icons"
+  },
+  "output": {
+    "root": "dist",
+    "styles": "dist/styles",
+    "scripts": "dist/scripts",
+    "worker": "dist/scripts/sw",
+    "images": "dist/images",
+    "icons": "dist/images/icons"
+  },
+  "tmp": {
+    "root": ".tmp",
+    "styles": ".tmp/styles",
+    "scripts": ".tmp/scripts",
+    "worker": ".tmp/scripts/sw",
+    "images": ".tmp/images",
+    "icons": ".tmp/images/icons"
+  },
+  "auto_prefixers": [
+    "ie >= 10",
+    "ie_mob >= 10",
+    "ff >= 30",
+    "chrome >= 34",
+    "safari >= 7",
+    "opera >= 23",
+    "ios >= 7",
+    "android >= 4.4",
+    "bb >= 10"
+  ]
+}
