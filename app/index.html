@@ -35,15 +35,22 @@
     <!--
     <link rel="canonical" href="http://www.example.com/">
     -->
-
     <!-- Material Design icons -->
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <!-- Your styles -->
+    <link rel="stylesheet" href="styles/angular-material.css">
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body ng-controller="AppController as appCtrl">
   <main>
-    <header></header>
+    <header>
+      <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+          <h2 flex md-truncate>tinybase</h2>
+        </div>
+      </md-toolbar>
+    </header>
     <section>
       <ui-view></ui-view>
     </section>

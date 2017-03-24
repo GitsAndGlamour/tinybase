@@ -8,6 +8,7 @@
   },
 
   "rules": {
-    "no-warning-comments": 0
+    "no-warning-comments": 0,
+    "quote-props": 0
   }
 }

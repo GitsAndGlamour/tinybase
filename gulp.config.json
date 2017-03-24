@@ -16,19 +16,22 @@
       "app/**/widgets.module.js",
       "app/**/services.module.js",
       "app/**/libraries.module.js",
-      "app/**/app.module.js",
+      "app/app.module.js",
       "app/**/*.module.js"
     ],
     "order": {
       "scripts": [
-        "app/**/*.routes.js",
+        "app/**/*.route.js",
         "app/**/*.service.js",
         "app/**/*.controller.js"
       ],
       "modules": [
-        "app/**/*.routes.js",
-        "app/**/*.service.js",
-        "app/**/*.controller.js"
+        "app/widgets/widgets.module.js",
+        "app/services/services.module.js",
+        "app/util/util.module.js",
+        "app/libraries.module.js",
+        "app/app.module.js",
+        "app/**/*.module.js"
       ]
     },
     "source_js": [
