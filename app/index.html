@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="" ng-app="app">
+<html lang="en" ng-app="app">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +53,7 @@
     <!-- Your styles -->
     <link rel="stylesheet" href="styles/main.css">
   </head>
-  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+  <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base" ng-controller="AppController as appCtrl">
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
       <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--primary">
         <div class="mdl-layout--large-screen-only mdl-layout__header-row">
@@ -142,6 +142,7 @@
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text">
                 <h4>Technology</h4>
+                {{appCtrl.testText}}
               <ui-view></ui-view>
               <div class="mdl-card__actions">
                 <a href="#" class="mdl-button">Read our features</a>
@@ -283,14 +284,15 @@
         </footer>
       </main>
     </div>
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/angular-aria/angular-aria.min.js"></script>
-    <script src="lib/angular-animate/angular-animate.min.js"></script>
-    <script src="lib/angular-messages/angular-messages.min.js"></script>
-    <script src="lib/angular-material/angular-material.min.js"></script>
-    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-aria/angular-aria.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-messages/angular-messages.js"></script>
+    <script src="lib/angular-material/angular-material.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="https://code.getmdl.io/1.2.1/material.js"></script>
     <!-- build:js scripts/main.min.js -->
+    <script src="scripts/modules.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
 

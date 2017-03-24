@@ -1,4 +1,6 @@
-/* app.module.js */
+/**
+ *  app.module.js
+ *  */
 angular
   .module('app', [
     'libraries',
@@ -7,13 +9,8 @@ angular
     'util',
     'widgets'
   ])
-  .config(function($compileProvider, $httpProvider,
-                    $mdThemingProvider, CONFIG) {
+  .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('indigo')
       .accentPalette('lime');
-    $httpProvider.defaults.withCredentials = true;
-    if (CONFIG.projectInfo.env === 'prod') {
-      $compileProvider.debugInfoEnabled(false);
-    }
   });

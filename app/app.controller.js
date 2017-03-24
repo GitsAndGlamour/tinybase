@@ -10,7 +10,7 @@ AppController.$inject = [];
 function AppController() {
   var ctrl = this;
   ctrl.$onInit = $onInit;
-
+  ctrl.testText = 'test text';
   /**
    * Initialization function
    */

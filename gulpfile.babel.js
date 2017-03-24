@@ -33,8 +33,9 @@ import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
-var scaffolding = require('scaffolding-angular');
 
+var scaffolding = require('scaffolding-angular'),
+order = require('gulp-order');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -114,6 +115,30 @@ gulp.task('styles', () => {
     .pipe(gulp.dest('.tmp/styles'));
 });
 
+gulp.task('modules', () =>
+  gulp.src([
+    "app/**/widgets.module.js",
+    "app/**/services.module.js",
+    "app/**/libraries.module.js",
+    "app/**/app.module.js",
+    "app/**/*.module.js"])
+      .pipe($.newer('.tmp/scripts'))
+      .pipe($.sourcemaps.init())
+      .pipe($.babel())
+      .pipe($.sourcemaps.write())
+      .pipe(gulp.dest('.tmp/scripts'))
+      .pipe(order([
+        "app/**/*.routes.js",
+        "app/**/*.service.js",
+        "app/**/*.controller.js"]))
+      .pipe($.concat('modules.min.js'))
+      // Output files
+      .pipe($.size({title: 'scripts'}))
+      .pipe($.sourcemaps.write('.'))
+      .pipe(gulp.dest('dist/scripts'))
+      .pipe(gulp.dest('.tmp/scripts'))
+);
+
 // Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
 // to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
 // `.babelrc` file.
@@ -126,10 +151,9 @@ gulp.task('scripts', () =>
       "!app/worker/**",
       "!app/**/*.spec.js",
       "!app/**/*.mock.js",
-      "app/**/*.module.js",
       "app/**/*.routes.js",
-      "app/services/**/*.service.js",
-      "app/**/**/*.js"
+      "app/**/*.service.js",
+      "app/**/*.controller.js"
       // Other scripts
     ])
       .pipe($.newer('.tmp/scripts'))
@@ -137,8 +161,11 @@ gulp.task('scripts', () =>
       .pipe($.babel())
       .pipe($.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
+      .pipe(order([
+        "app/**/*.routes.js",
+        "app/**/*.service.js",
+        "app/**/*.controller.js"]))
       .pipe($.concat('main.min.js'))
-      .pipe($.uglify({preserveComments: 'some'}))
       // Output files
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
@@ -215,8 +242,7 @@ gulp.task('serve:dist', ['default'], () =>
 // Build production files, the default task
 gulp.task('default', ['clean'], cb =>
   runSequence(
-    'libs', 'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
+    ['lint', 'html', 'libs', 'modules', 'scripts', 'styles', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
