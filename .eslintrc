@@ -1,0 +1,13 @@
+{
+  "env": {
+    "browser": 1
+  },
+
+  "globals": {
+    "angular": 1
+  },
+
+  "rules": {
+    "no-warning-comments": 0
+  }
+}

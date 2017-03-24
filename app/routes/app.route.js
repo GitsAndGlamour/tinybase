@@ -1,9 +1,7 @@
 angular
   .module('app')
-  .config(function ($stateProvider, $urlRouterProvider) {
-
+  .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
-
     $stateProvider
       .state('login', {
         url: '/login',
@@ -15,5 +13,5 @@ angular
       .state('home', {
         url: '/home',
         template: '<home flex></home>'
-      })
+      });
   });

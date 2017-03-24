@@ -33,17 +33,25 @@ import swPrecache from 'sw-precache';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
+var scaffolding = require('scaffolding-angular');
+
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 
+
 // Lint JavaScript
 gulp.task('lint', () =>
-  gulp.src(['app/scripts/**/*.js','!node_modules/**'])
+  gulp.src(['app/**/*.js','!node_modules/**', '!app/lib/**'])
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
 );
+
+// Scaffolding UI
+gulp.task('scaffolding', function (done) {
+  scaffolding.appStart();
+});
 
 gulp.task('libs', () =>
   gulp.src('app/lib/**/*')
@@ -114,11 +122,12 @@ gulp.task('scripts', () =>
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
-      './app/js/**/*.route.js',
-      './app/js/**/*.module.js',
-      './app/js/**/*.service.js',
-      './app/js/**/*.controller.js',
-      './app/scripts/main.js'
+      "!app/**/*.spec.js",
+      "!app/**/*.mock.js",
+      "app/**/*.module.js",
+      "app/**/*.routes.js",
+      "app/services/**/*.service.js",
+      "app/**/**/*.js"
       // Other scripts
     ])
       .pipe($.newer('.tmp/scripts'))
@@ -224,7 +233,7 @@ gulp.task('pagespeed', cb =>
 
 // Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
 gulp.task('copy-sw-scripts', () => {
-  return gulp.src(['node_modules/sw-toolbox/sw-toolbox.js', 'app/scripts/sw/runtime-caching.js'])
+  return gulp.src(['node_modules/sw-toolbox/sw-toolbox.js', 'app/worker/runtime-caching.js'])
     .pipe(gulp.dest('dist/scripts/sw'));
 });
 
@@ -235,7 +244,7 @@ gulp.task('copy-sw-scripts', () => {
 // live reload to work as expected when serving from the 'app' directory.
 gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
   const rootDir = 'dist';
-  const filepath = path.join(rootDir, 'service-worker.js');
+  const filepath = path.join(rootDir, 'scripts/sw/service-worker.js');
 
   return swPrecache.write(filepath, {
     // Used to avoid cache conflicts when serving on localhost.
