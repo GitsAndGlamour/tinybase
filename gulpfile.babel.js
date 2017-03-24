@@ -26,22 +26,26 @@
 
 import path from 'path';
 import gulp from 'gulp';
-import del from 'del';
+import del  from 'del';
+import pkg  from './package.json';
 import runSequence from 'run-sequence';
 import browserSync from 'browser-sync';
-import swPrecache from 'sw-precache';
-import gulpLoadPlugins from 'gulp-load-plugins';
+import swPrecache  from 'sw-precache';
+import gulpLoadPlugins       from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
-import pkg from './package.json';
 
 var scaffolding = require('scaffolding-angular'),
-order = require('gulp-order');
+  order  = require('gulp-order'),
+  config = require('./gulp.config.json');
 
-const $ = gulpLoadPlugins();
+const $      = gulpLoadPlugins();
 const reload = browserSync.reload;
 
 
-// Lint JavaScript
+/**
+ * LintJS
+ * Ensures code quality
+ */
 gulp.task('lint', () =>
   gulp.src(['app/**/*.js','!node_modules/**', '!app/lib/**'])
     .pipe($.eslint())
@@ -49,133 +53,125 @@ gulp.task('lint', () =>
     .pipe($.if(!browserSync.active, $.eslint.failAfterError()))
 );
 
-// Scaffolding UI
+/**
+ * Angular Scaffolding
+ */
 gulp.task('scaffolding', function (done) {
   scaffolding.appStart();
 });
 
-gulp.task('libs', () =>
-  gulp.src('app/lib/**/*')
-    .pipe(gulp.dest('dist/lib')));
-
-// Optimize images
+/**
+ * Image Optimization
+ */
 gulp.task('images', () =>
-  gulp.src('app/images/**/*')
+  gulp.src(config.input.images)
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest(config.output.images))
     .pipe($.size({title: 'images'}))
 );
 
-// Copy all files at the root level (app)
+/**
+ * Root-level file dump
+ */
 gulp.task('copy', () =>
-  gulp.src([
-    'app/*',
-    '!app/*.html',
-    'node_modules/apache-server-configs/dist/.htaccess'
-  ], {
+  gulp.src(config.input.source_copy, {
     dot: true
-  }).pipe(gulp.dest('dist'))
+  }).pipe(gulp.dest(config.output.root))
     .pipe($.size({title: 'copy'}))
 );
 
-// Compile and automatically prefix stylesheets
+/**
+ * Compile and automatically prefix stylesheets
+ */
 gulp.task('styles', () => {
-  const AUTOPREFIXER_BROWSERS = [
-    'ie >= 10',
-    'ie_mob >= 10',
-    'ff >= 30',
-    'chrome >= 34',
-    'safari >= 7',
-    'opera >= 23',
-    'ios >= 7',
-    'android >= 4.4',
-    'bb >= 10'
-  ];
+  const AUTOPREFIXER_BROWSERS = config.auto_prefixers;
 
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
-    'app/styles/**/*.scss',
-    'app/styles/**/*.css'
+    config.input.lib_sass,
+    config.input.source_sass,
+    config.input.source_css_main,
+    config.input.icons
   ])
-    .pipe($.newer('.tmp/styles'))
+    .pipe($.newer(config.tmp.styles))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       precision: 10
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest(config.tmp.styles))
     // Concatenate and minify styles
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/styles'))
-    .pipe(gulp.dest('.tmp/styles'));
+    .pipe(gulp.dest(config.output.styles))
+    .pipe(gulp.dest(config.tmp.styles));
 });
 
-gulp.task('modules', () =>
-  gulp.src([
-    "app/**/widgets.module.js",
-    "app/**/services.module.js",
-    "app/**/libraries.module.js",
-    "app/**/app.module.js",
-    "app/**/*.module.js"])
-      .pipe($.newer('.tmp/scripts'))
-      .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      .pipe(order([
-        "app/**/*.routes.js",
-        "app/**/*.service.js",
-        "app/**/*.controller.js"]))
-      .pipe($.concat('modules.min.js'))
-      // Output files
-      .pipe($.size({title: 'scripts'}))
-      .pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('dist/scripts'))
-      .pipe(gulp.dest('.tmp/scripts'))
+/**
+ * Angular Bower Component dependencies
+ */
+gulp.task('libs', () =>
+  gulp.src(config.input.lib_js)
+    .pipe($.newer(config.tmp.scripts))
+    .pipe($.sourcemaps.init())
+    .pipe($.babel())
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(config.tmp.scripts))
+    .pipe($.concat('vendor.min.js'))
+    .pipe($.uglify())
+    .pipe($.size({title: 'libs'}))
+    .pipe($.sourcemaps.write('.'))
+    .pipe(gulp.dest(config.output.scripts))
+    .pipe(gulp.dest(config.tmp.scripts))
 );
 
-// Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
-// to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
-// `.babelrc` file.
-gulp.task('scripts', () =>
-    gulp.src([
-      // Note: Since we are not using useref in the scripts build pipeline,
-      //       you need to explicitly list your scripts here in the right order
-      //       to be correctly concatenated
-      "!app/lib/**",
-      "!app/worker/**",
-      "!app/**/*.spec.js",
-      "!app/**/*.mock.js",
-      "app/**/*.routes.js",
-      "app/**/*.service.js",
-      "app/**/*.controller.js"
-      // Other scripts
-    ])
-      .pipe($.newer('.tmp/scripts'))
+/**
+ * Local Angular modules
+ */
+gulp.task('modules', () =>
+  gulp.src(config.input.modules_js)
+      .pipe($.newer(config.tmp.scripts))
       .pipe($.sourcemaps.init())
       .pipe($.babel())
       .pipe($.sourcemaps.write())
-      .pipe(gulp.dest('.tmp/scripts'))
-      .pipe(order([
-        "app/**/*.routes.js",
-        "app/**/*.service.js",
-        "app/**/*.controller.js"]))
+      .pipe(gulp.dest(config.tmp.scripts))
+      .pipe(order(config.input.order.modules))
+      .pipe($.concat('modules.min.js'))
+      .pipe($.size({title: 'modules'}))
+      .pipe($.sourcemaps.write('.'))
+      .pipe(gulp.dest(config.output.scripts))
+      .pipe(gulp.dest(config.tmp.scripts))
+);
+
+ /** Concatenate and minify JavaScript. Optionally transpiles ES2015 code to ES5.
+  * to enable ES2015 support remove the line `"only": "gulpfile.babel.js",` in the
+  * `.babelrc` file.
+  */
+gulp.task('scripts', ['libs', 'modules'], () =>
+    gulp.src(config.input.source_js)
+      .pipe($.newer(config.tmp.scripts))
+      .pipe($.sourcemaps.init())
+      .pipe($.babel())
+      .pipe($.sourcemaps.write())
+      .pipe(gulp.dest(config.tmp.scripts))
+      .pipe(order(config.input.order.scripts))
       .pipe($.concat('main.min.js'))
       // Output files
       .pipe($.size({title: 'scripts'}))
       .pipe($.sourcemaps.write('.'))
-      .pipe(gulp.dest('dist/scripts'))
-      .pipe(gulp.dest('.tmp/scripts'))
+      .pipe(gulp.dest(config.output.scripts))
+      .pipe(gulp.dest(config.tmp.scripts))
 );
 
-// Scan your HTML for assets & optimize them
+/**
+ * Scan HTML for assets & optimize them
+ */
 gulp.task('html', () => {
-  return gulp.src('app/**/*.html')
+  return gulp.src([config.input.html])
     .pipe($.useref({
       searchPath: '{.tmp,app}',
       noAssets: true
@@ -198,10 +194,14 @@ gulp.task('html', () => {
     .pipe(gulp.dest('dist'));
 });
 
-// Clean output directory
+/**
+ * Clean output registry
+ */
 gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
 
-// Watch files for changes & reload
+/**
+ * Watch for changes and handle reloading
+ */
 gulp.task('serve', ['scripts', 'styles'], () => {
   browserSync({
     notify: false,
@@ -239,16 +239,20 @@ gulp.task('serve:dist', ['default'], () =>
   })
 );
 
-// Build production files, the default task
+/**
+ * Production build
+ */
 gulp.task('default', ['clean'], cb =>
   runSequence(
-    ['lint', 'html', 'libs', 'modules', 'scripts', 'styles', 'images', 'copy'],
+    ['lint', 'html', 'scripts', 'styles', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
 );
 
-// Run PageSpeed Insights
+/**
+ * PageSpeed
+ * */
 gulp.task('pagespeed', cb =>
   // Update the below URL to the public URL of your site
   pagespeed('example.com', {
@@ -262,21 +266,22 @@ gulp.task('pagespeed', cb =>
 // Copy over the scripts that are used in importScripts as part of the generate-service-worker task.
 gulp.task('copy-sw-scripts', () => {
   return gulp.src(['node_modules/sw-toolbox/sw-toolbox.js', 'app/worker/runtime-caching.js'])
-    .pipe(gulp.dest('dist/scripts/sw'));
+    .pipe(gulp.dest(config.output.worker));
 });
 
-// See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
-// an in-depth explanation of what service workers are and why you should care.
-// Generate a service worker file that will provide offline functionality for
-// local resources. This should only be done for the 'dist' directory, to allow
-// live reload to work as expected when serving from the 'app' directory.
+/** See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
+ * an in-depth explanation of what service workers are and why you should care.
+ * Generate a service worker file that will provide offline functionality for
+ * local resources. This should only be done for the 'dist' directory, to allow
+ * live reload to work as expected when serving from the 'app' directory.
+ */
 gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
   const rootDir = 'dist';
   const filepath = path.join(rootDir, 'service-worker.js');
 
   return swPrecache.write(filepath, {
     // Used to avoid cache conflicts when serving on localhost.
-    cacheId: pkg.name || 'web-starter-kit',
+    cacheId: pkg.name || 'tinybase',
     // sw-toolbox.js needs to be listed first. It sets up methods used in runtime-caching.js.
     importScripts: [
       'scripts/sw/sw-toolbox.js',
