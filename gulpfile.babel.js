@@ -122,6 +122,8 @@ gulp.task('scripts', () =>
       // Note: Since we are not using useref in the scripts build pipeline,
       //       you need to explicitly list your scripts here in the right order
       //       to be correctly concatenated
+      "!app/lib/**",
+      "!app/worker/**",
       "!app/**/*.spec.js",
       "!app/**/*.mock.js",
       "app/**/*.module.js",
@@ -190,7 +192,7 @@ gulp.task('serve', ['scripts', 'styles'], () => {
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
+  gulp.watch(['app/**/*.js', '!app/lib/**'], ['lint', 'scripts', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -244,7 +246,7 @@ gulp.task('copy-sw-scripts', () => {
 // live reload to work as expected when serving from the 'app' directory.
 gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
   const rootDir = 'dist';
-  const filepath = path.join(rootDir, 'scripts/sw/service-worker.js');
+  const filepath = path.join(rootDir, 'service-worker.js');
 
   return swPrecache.write(filepath, {
     // Used to avoid cache conflicts when serving on localhost.
