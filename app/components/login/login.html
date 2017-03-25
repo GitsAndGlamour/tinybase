@@ -13,26 +13,35 @@
         <md-tab label="Sign Up">
           <md-content class="md-padding">
             <h1 class="md-display-2">Sign Up</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+            <h4>Sign up via</h4>
+            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
+            ng-click="facebookSignUp()">Facebook</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
+            ng-click="googleSignUp()">Google</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
+            ng-click="emailSignUp()">E-Mail</md-button>
           </md-content>
         </md-tab>
         <md-tab label="Log In">
           <md-content class="md-padding">
             <h1 class="md-display-2">Log In</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
-            <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
-            <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
-          </md-content>
+            <h4>Log in via</h4>
+            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
+            ng-click="facebookLogin()">Facebook</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
+            ng-click="googleLogin()">Google</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
+            ng-click="emailLogin()">E-Mail</md-button></md-content>
         </md-tab>
       </md-tabs>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button ng-click="answer('not useful'); cancel();" >
+      <md-button ng-click="cancel()" >
         Cancel
       </md-button>
-      <md-button ng-click="answer('useful')" style="margin-right:20px;" >
+      <md-button ng-click="login()" style="margin-right:20px;" >
         Go
       </md-button>
     </md-dialog-actions>
