@@ -41,6 +41,7 @@
       "!app/**/*.mock.js",
       "app/**/*.routes.js",
       "app/**/*.service.js",
+      "app/**/*.component.js",
       "app/**/*.controller.js"
     ],
     "lib_js": [
@@ -53,7 +54,7 @@
     ],
     "html": "app/**/*.html",
     "images": [
-      "app/images/*"
+      "app/images/**"
     ],
     "icons": "https://fonts.googleapis.com/icon?family=Material+Icons"
   },

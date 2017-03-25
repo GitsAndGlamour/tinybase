@@ -48,6 +48,10 @@
       <md-toolbar class="md-primary">
         <div class="md-toolbar-tools">
           <h2 flex md-truncate>tinybase</h2>
+          <span flex></span>
+          <md-button ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
+          <md-button ng-click="appCtrl.showLoginDialog('login')">login</md-button>
+          <md-button ng-click="appCtrl.logout()">logout</md-button>
         </div>
       </md-toolbar>
     </header>

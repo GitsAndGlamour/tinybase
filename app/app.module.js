@@ -48,5 +48,10 @@ angular
     });
 
     $mdThemingProvider.theme('default')
-      .primaryPalette('greyscale');
+      .primaryPalette('greyscale', {
+        'default': '900',
+        'hue-1': 'A100',
+        'hue-2': 'A200',
+        'hue-3': 'A400'
+      });
   });
