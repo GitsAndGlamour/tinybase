@@ -1,0 +1,49 @@
+<md-dialog aria-label="Signup/Login">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="images/icons/icon_close_light.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <md-tabs md-dynamic-height md-border-bottom md-selected="selectedIndex">
+        <md-tab label="Sign Up">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Sign Up</h1>
+            <h4>Sign up via</h4>
+            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
+            ng-click="facebookSignUp()">Facebook</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
+            ng-click="googleSignUp()">Google</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
+            ng-click="signUp()">E-Mail</md-button>
+          </md-content>
+        </md-tab>
+        <md-tab label="Log In">
+          <md-content class="md-padding">
+            <h1 class="md-display-2">Log In</h1>
+            <h4>Log in via</h4>
+            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
+            ng-click="facebookLogin()">Facebook</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
+            ng-click="googleLogin()">Google</md-button>
+            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
+            ng-click="login()">E-Mail</md-button></md-content>
+        </md-tab>
+      </md-tabs>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()" >
+        Cancel
+      </md-button>
+      <md-button ng-click="login()" style="margin-right:20px;" >
+        Go
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
