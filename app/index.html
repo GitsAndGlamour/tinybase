@@ -49,9 +49,16 @@
         <div class="md-toolbar-tools">
           <h2 flex md-truncate>tinybase</h2>
           <span flex></span>
-          <md-button ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
-          <md-button ng-click="appCtrl.showLoginDialog('login')">login</md-button>
-          <md-button ng-click="appCtrl.logout()">logout</md-button>
+          <div>
+            <div layout="row" layout-align="center center">
+              <span layout="column"> Business Owners</span>
+            </div>
+            <div layout="row">
+              <md-button layout="column" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
+              <md-button layout="column" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
+              <md-button layout="column" ng-click="appCtrl.logout()">logout</md-button>
+            </div>
+          </div>
         </div>
       </md-toolbar>
     </header>
