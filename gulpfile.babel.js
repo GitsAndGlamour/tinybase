@@ -65,10 +65,6 @@ gulp.task('scaffolding', function (done) {
  */
 gulp.task('images', () =>
   gulp.src(config.input.images)
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true
-    })))
     .pipe(gulp.dest(config.output.images))
     .pipe($.size({title: 'images'}))
 );

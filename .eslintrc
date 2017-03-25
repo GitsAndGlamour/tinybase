@@ -10,6 +10,7 @@
   "rules": {
     "no-warning-comments": 0,
     "quote-props": 0,
-    "require-jsdoc": 0
+    "require-jsdoc": 0,
+    "no-undef": 0
   }
 }
