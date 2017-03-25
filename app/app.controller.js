@@ -1,19 +1,21 @@
 angular.module('app')
    .controller('AppController', AppController);
 
-AppController.$inject = ['$mdDialog'];
+AppController.$inject = ['$mdDialog', 'UserService'];
 
 /**
  * AppController handles the ui-view
  *
- * @param {Injector} $mdDialog Injector Module
+ * @param {Injector} $mdDialog Injector Module for dialog popups
+ * @param {Module} UserService Module that retains user data
  * @constructor
  */
-function AppController($mdDialog) {
+function AppController($mdDialog, UserService) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
   ctrl.logout = logout;
+  ctrl.user = null;
   /**
    * Initialization function
    */
@@ -36,12 +38,10 @@ function AppController($mdDialog) {
         tab: tab
       }
     })
-      .then(function(answer) {
-        ctrl.status = 'You said the information was "' + answer + '".';
-      }, function() {
-        ctrl.status = 'You cancelled the dialog.';
+      .then(function() {
+        ctrl.user = UserService.getUser();
+        console.log(ctrl.user);
       });
-    console.log(ctrl.status, tab);
   }
 
   /*

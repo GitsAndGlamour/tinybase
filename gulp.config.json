@@ -8,6 +8,7 @@
       "!app/lib",
       "!app/*.html",
       "!app/worker",
+      "!app/services",
       "app/*",
       "node_modules/apache-server-configs/dist/.htaccess"
     ],
@@ -39,10 +40,11 @@
       "!app/worker/**",
       "!app/**/*.spec.js",
       "!app/**/*.mock.js",
-      "app/**/*.routes.js",
+      "app/**/*.route.js",
       "app/**/*.service.js",
       "app/**/*.component.js",
-      "app/**/*.controller.js"
+      "app/**/*.controller.js",
+      "app/**/*.js"
     ],
     "lib_js": [
       "app/lib/angular/angular.js",

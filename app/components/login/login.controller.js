@@ -1,47 +1,78 @@
 angular.module('app')
   .controller('LoginController', LoginController);
 
-LoginController.$inject = ['tab', '$scope', '$mdDialog'];
+LoginController.$inject = ['tab',
+  '$scope',
+  '$mdDialog',
+  'FirebaseService',
+  'UserService'];
 
-function LoginController(tab, $scope, $mdDialog) {
+function LoginController(tab, $scope, $mdDialog,
+                         FirebaseService, UserService) {
   $scope.selectedIndex = tab === 'signup' ? 0 : 1;
-  $scope.$onInit = $onInit;
+  $scope.$onInit = $onInit();
   $scope.cancel = cancel;
-  $scope.signUp= signUp;
-  $scope.login = login;
+  $scope.signUp = signUp;
   $scope.facebookSignUp = facebookSignUp;
   $scope.googleSignUp = googleSignUp;
+  $scope.login = login;
   $scope.facebookLogin = facebookLogin;
   $scope.googleLogin = googleLogin;
+  $scope.logout = logout;
 
   function $onInit() {
   }
 
   function signUp() {
-    console.log('login');
+    FirebaseService.signUpViaEmail($scope.user.email, $scope.user.password);
+    var authType = 'e-mail';
+    getUserData(authType);
   }
 
   function facebookSignUp() {
-    console.log('login');
+    console.log('facebookSignUp');
   }
 
   function googleSignUp() {
-    console.log('login');
+    console.log('googleSignUp');
   }
 
   function login() {
-    console.log('login');
+    FirebaseService.signInViaEmail($scope.user.email, $scope.user.password);
+    var authType = 'e-mail';
+    getUserData(authType);
   }
 
   function facebookLogin() {
-    console.log('login');
+    console.log('facebookLogin');
   }
 
   function googleLogin() {
-    console.log('login');
+    console.log('googleLogin');
   }
 
   function cancel() {
     $mdDialog.hide();
+  }
+
+  function getUserData(authType) {
+    var user = FirebaseService.getCurrentUser();
+    user.authType = authType;
+    UserService.setUser(user);
+    $mdDialog.hide();
+  }
+
+  function logout() {
+    var user = UserService.getUser();
+    switch (user.authType) {
+      case 'e-mail': FirebaseService.logOutViaEmail();
+        break;
+      case 'google': FirebaseService.logOutViaGoogle();
+        break;
+      case 'facebook': FirebaseService.logOutViaFacebook();
+        break;
+      default:
+        break;
+    }
   }
 }

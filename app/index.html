@@ -54,9 +54,10 @@
               <span layout="column"> Business Owners</span>
             </div>
             <div layout="row">
-              <md-button layout="column" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
-              <md-button layout="column" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
-              <md-button layout="column" ng-click="appCtrl.logout()">logout</md-button>
+              <small layout="column" ng-if="appCtrl.user.email" id="welcome-user-display">WELCOME {{appCtrl.user.email.toUpperCase()}}! </small>
+              <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
+              <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
+              <md-button layout="column" ng-if="appCtrl.user" ng-click="appCtrl.logout()">logout</md-button>
             </div>
           </div>
         </div>
@@ -67,6 +68,18 @@
     </section>
     <footer></footer>
   </main>
+    <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyA1YS0wfFajv78rrRWwFfboHcFwItOpUrQ",
+        authDomain: "tinybase-63cb4.firebaseapp.com",
+        databaseURL: "https://tinybase-63cb4.firebaseio.com",
+        storageBucket: "tinybase-63cb4.appspot.com",
+        messagingSenderId: "288460745346"
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="scripts/vendor.min.js"></script>
     <script src="scripts/modules.min.js"></script>
     <script src="scripts/main.min.js"></script>
