@@ -10,7 +10,8 @@ function LoginController(tab, $scope, $mdDialog,
                          FirebaseService) {
   $scope.selectedIndex = tab === 'signup' ? 0 : 1;
   $scope.$onInit = $onInit();
-  $scope.provider = new firebase.auth.FacebookAuthProvider();
+  $scope.facebookProvider = new firebase.auth.FacebookAuthProvider();
+  $scope.googleProvider = new firebase.auth.GoogleAuthProvider();
   $scope.cancel = cancel;
   $scope.signUp = signUp;
   $scope.facebookSignUp = facebookSignUp;
@@ -32,7 +33,7 @@ function LoginController(tab, $scope, $mdDialog,
   }
 
   function googleSignUp() {
-    console.log('googleSignUp');
+    googleLogin();
   }
 
   function login() {
@@ -41,11 +42,11 @@ function LoginController(tab, $scope, $mdDialog,
   }
 
   function facebookLogin() {
-    FirebaseService.signInViaFacebook($scope.provider);
+    FirebaseService.signInViaPopup($scope.facebookProvider);
   }
 
   function googleLogin() {
-    console.log('googleLogin');
+    FirebaseService.signInViaPopup($scope.googleProvider);
   }
 
   function cancel() {
