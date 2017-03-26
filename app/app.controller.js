@@ -1,7 +1,8 @@
 angular.module('app')
    .controller('AppController', AppController);
 
-AppController.$inject = ['$mdDialog', 'UserService', 'FirebaseService'];
+AppController.$inject = ['$mdDialog',
+  'UserService', 'FirebaseService', 'DatabaseService', '$timeout'];
 
 /**
  * AppController handles the ui-view
@@ -10,9 +11,13 @@ AppController.$inject = ['$mdDialog', 'UserService', 'FirebaseService'];
  * @param {Module} UserService Module that retains user data
  * @param {Module} FirebaseService Module that makes service
  * calls to Google Firebase API
+ * @param {Module} DatabaseService Module handles Firebase data storage
+ * @param {Injector} $timeout Injector Module for delaying processes
+ *
  * @constructor
  */
-function AppController($mdDialog, UserService, FirebaseService) {
+function AppController($mdDialog, UserService,
+                       FirebaseService, DatabaseService, $timeout) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
@@ -43,11 +48,34 @@ function AppController($mdDialog, UserService, FirebaseService) {
     })
       .then(function() {
         ctrl.user = UserService.getUser();
-        if (ctrl.user.email && !ctrl.user.emailVerified) {
-          showEmailVerificationDialog();
+        if (ctrl.user.email) {
+          if (!ctrl.user.emailVerified) {
+            showEmailVerificationDialog();
+          }
+          var user = DatabaseService.getUser(ctrl.user);
+          if (!user) {
+            DatabaseService.createUser(ctrl.user);
+            $timeout(function() {
+              ctrl.user.data = UserService.getData();
+              console.log(ctrl.user);
+            }, 5000);
+          } else if (user.business === 'n/a')
+            showAddBusinessDialog(user);
         }
-        console.log(ctrl.user);
+
       });
+  }
+
+  function showAddBusinessDialog(user) {
+    $mdDialog.show({
+      controller: AddBusinessController,
+      templateUrl: 'components/add-business/add-business.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+      locals: {
+        tab: tab
+      }
+    })
   }
 
   /*

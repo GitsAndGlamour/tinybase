@@ -9,7 +9,15 @@ function UserService() {
     service.user = user;
   };
 
+  service.setData = function(data) {
+    service.user.data = data;
+  };
+
   service.getUser = function() {
     return service.user;
+  };
+
+  service.getData = function() {
+    return service.user.data;
   };
 }

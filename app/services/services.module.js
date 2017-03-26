@@ -1,2 +1,2 @@
 angular
-  .module('services', ['user', 'firebase']);
+  .module('services', ['user', 'firebase', 'database']);
