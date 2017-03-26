@@ -62,10 +62,11 @@
                   <md-button layout="row" layout-align="center center"
                              class="md-primary md-raised md-hue-3 registration-buttons"
                              ng-click="login()">Log in via E-mail</md-button>
+                  <md-button class="registration-buttons" ng-click="passwordReset()">(Forgot Password?)</md-button>
                 </fieldset>
               </form>
             </div>
-            <div layout="row" layout-align="center center">- or -</div>
+            <div layout="row" layout-align="center center" class="or-separator">- or -</div>
             <img class="facebook-button"
                  ng-click="facebookLogin()"
                  src="images/facebook_signin_button.png"/>

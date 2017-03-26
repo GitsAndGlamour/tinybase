@@ -1,13 +1,12 @@
 angular.module('firebase')
   .service('FirebaseService', FirebaseService);
-FirebaseService.$inject = ['$mdDialog', 'UserService'];
-function FirebaseService($mdDialog, UserService) {
+FirebaseService.$inject = ['$mdDialog', 'UserService', '$timeout'];
+function FirebaseService($mdDialog, UserService, $timeout) {
   var service = this;
 
   service.signUpViaEmail = function(email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .catch(function(error) {
-        console.log(error);
         $mdDialog.hide();
         $mdDialog.show(
           $mdDialog.alert()
@@ -20,7 +19,9 @@ function FirebaseService($mdDialog, UserService) {
             .ok('OK')
         );
       });
-    service.signInViaEmail(email, password);
+    $timeout(function() {
+      service.signInViaEmail(email, password);
+    }, 5000);
   };
 
   service.signInViaEmail = function(email, password) {
@@ -42,11 +43,8 @@ function FirebaseService($mdDialog, UserService) {
 
   service.signInViaPopup = function(provider, auth) {
     firebase.auth().signInWithPopup(provider).then(function(result) {
-      var token = result.credential.accessToken;
       var user = result.user;
-      console.log(token, user);
       UserService.setUser(user);
-      console.log(user.email);
       $mdDialog.hide();
     }).catch(function(error) {
       $mdDialog.hide();
@@ -81,13 +79,70 @@ function FirebaseService($mdDialog, UserService) {
     });
   };
 
+  service.verifyEmailAddress = function() {
+    var user = firebase.auth().currentUser;
+    user.sendEmailVerification().then(function() {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('')
+          .textContent('Your e-mail verification was successfully sent.')
+          .ariaLabel('Email Verification Result Alert')
+          .ok('OK')
+      );
+    }, function(error) {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('E-mail Verification Failure!')
+          .textContent('There was an error verifying your e-mail account. ' +
+            'Please try again. ' + error.message)
+          .ariaLabel('Email Verification Result Alert')
+          .ok('OK')
+      );
+    });
+  };
+
   service.getCurrentUser = function() {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         UserService.setUser(user);
-        console.log(UserService.getUser());
       }
       return null;
+    });
+  };
+
+  service.resetPassword = function(emailAddress) {
+    var auth = firebase.auth();
+
+    auth.sendPasswordResetEmail(emailAddress).then(function() {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('')
+          .textContent('Your password reset e-mail was successfully sent.')
+          .ariaLabel('Password Reset Alert')
+          .ok('OK')
+      );
+    }, function(error) {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('Password Reset Failure!')
+          .textContent('An error occurred in sending you a password ' +
+            'reset e-mail to ' + emailAddress + '. Please try again. ' +
+            error.message)
+          .ariaLabel('Password Reset Error Alert')
+          .ok('OK')
+      );
     });
   };
 }

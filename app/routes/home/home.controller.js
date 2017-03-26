@@ -14,6 +14,5 @@ function HomeController() {
    * Initialization
    */
   function $onInit() {
-    console.log('Home Controller');
   }
 }

@@ -53,7 +53,9 @@
               <span layout="column"> Business Owners</span>
             </div>
             <div layout="row">
-              <small layout="column" ng-if="appCtrl.user.email" id="welcome-user-display">WELCOME {{appCtrl.user.email.toUpperCase()}}! </small>
+              <small layout="column" ng-if="appCtrl.user.email" id="welcome-user-display">WELCOME {{appCtrl.user.email.toUpperCase()}}!
+                <a href="#" ng-click="appCtrl.showEmailVerificationDialog()" ng-show="!appCtrl.emailVerified">(Verify E-mail)</a>
+              </small>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
               <md-button layout="column" ng-if="appCtrl.user" ng-click="appCtrl.logout()">logout</md-button>
