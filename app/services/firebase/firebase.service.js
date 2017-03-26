@@ -120,4 +120,34 @@ function FirebaseService($mdDialog, UserService, $timeout) {
       return null;
     });
   };
+
+  service.resetPassword = function(emailAddress) {
+    var auth = firebase.auth();
+
+    auth.sendPasswordResetEmail(emailAddress).then(function() {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('')
+          .textContent('Your password reset e-mail was successfully sent.')
+          .ariaLabel('Password Reset Alert')
+          .ok('OK')
+      );
+    }, function(error) {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('Password Reset Failure!')
+          .textContent('An error occurred in sending you a password ' +
+            'reset e-mail to ' + emailAddress + '. Please try again. ' +
+            error.message)
+          .ariaLabel('Password Reset Error Alert')
+          .ok('OK')
+      );
+    });
+  };
 }

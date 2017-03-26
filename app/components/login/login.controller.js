@@ -19,6 +19,7 @@ function LoginController(tab, $scope, $mdDialog,
   $scope.login = login;
   $scope.facebookLogin = facebookLogin;
   $scope.googleLogin = googleLogin;
+  $scope.passwordReset = passwordReset;
 
   function $onInit() {
   }
@@ -56,5 +57,23 @@ function LoginController(tab, $scope, $mdDialog,
   function getUserData() {
     FirebaseService.getCurrentUser();
     $mdDialog.hide();
+  }
+
+  function passwordReset() {
+    var confirm = $mdDialog.prompt()
+      .title('What is your e-mail address?')
+      .textContent('Please provide the e-mail address you signed up ' +
+        'with in order to help us locate your account and send you an ' +
+        'e-mail allowing you to reset your password.')
+      .placeholder('janedoe@tinybase.com')
+      .ariaLabel('E-Mail')
+      .initialValue('someone@gmail.com')
+      .ok('RESET PASSWORD')
+      .cancel('CANCEL');
+
+    $mdDialog.show(confirm).then(function(result) {
+      FirebaseService.resetPassword(result);
+    }, function() {
+    });
   }
 }
