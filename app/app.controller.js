@@ -24,7 +24,6 @@ function AppController($mdDialog, UserService, FirebaseService) {
    * Initialization function
    */
   function $onInit() {
-    console.log('AppController');
   }
 
   /**
@@ -47,6 +46,7 @@ function AppController($mdDialog, UserService, FirebaseService) {
         if (ctrl.user.email && !ctrl.user.emailVerified) {
           showEmailVerificationDialog();
         }
+        console.log(ctrl.user);
       });
   }
 

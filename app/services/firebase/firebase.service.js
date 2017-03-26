@@ -7,7 +7,6 @@ function FirebaseService($mdDialog, UserService, $timeout) {
   service.signUpViaEmail = function(email, password) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .catch(function(error) {
-        console.log(error);
         $mdDialog.hide();
         $mdDialog.show(
           $mdDialog.alert()
@@ -44,11 +43,8 @@ function FirebaseService($mdDialog, UserService, $timeout) {
 
   service.signInViaPopup = function(provider, auth) {
     firebase.auth().signInWithPopup(provider).then(function(result) {
-      var token = result.credential.accessToken;
       var user = result.user;
-      console.log(token, user);
       UserService.setUser(user);
-      console.log(user.email);
       $mdDialog.hide();
     }).catch(function(error) {
       $mdDialog.hide();
@@ -115,7 +111,6 @@ function FirebaseService($mdDialog, UserService, $timeout) {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         UserService.setUser(user);
-        console.log(UserService.getUser());
       }
       return null;
     });
