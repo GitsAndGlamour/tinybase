@@ -3,12 +3,15 @@ angular.module('app')
 
 AddBusinessController.$inject = ['user',
   '$scope',
-  '$mdDialog',
-  'FirebaseService'];
+  '$mdDialog'];
 
-function AddBusinessController(tab, $scope, $mdDialog,
-                         FirebaseService) {
+function AddBusinessController(user, $scope, $mdDialog) {
   $scope.cancel = cancel;
+  $scope.$onInit = $onInit();
+
+  function $onInit() {
+    console.log(user);
+  }
 
   function cancel() {
     $mdDialog.hide();

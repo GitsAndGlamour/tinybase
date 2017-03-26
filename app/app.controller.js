@@ -48,21 +48,25 @@ function AppController($mdDialog, UserService,
     })
       .then(function() {
         ctrl.user = UserService.getUser();
+        console.log(ctrl.user);
         if (ctrl.user.email) {
           if (!ctrl.user.emailVerified) {
-            showEmailVerificationDialog();
+            ctrl.emailVerified = false;
           }
-          var user = DatabaseService.getUser(ctrl.user);
-          if (!user) {
-            DatabaseService.createUser(ctrl.user);
-            $timeout(function() {
-              ctrl.user.data = UserService.getData();
-              console.log(ctrl.user);
-            }, 5000);
-          } else if (user.business === 'n/a')
-            showAddBusinessDialog(user);
+          DatabaseService.getUser(ctrl.user).then(function(user) {
+            console.log(user);
+            if (!user) {
+              DatabaseService.createUser(ctrl.user);
+              $timeout(function() {
+                ctrl.user.data = UserService.getData();
+                console.log(ctrl.user);
+              }, 5000);
+              showAddBusinessDialog(ctrl.user);
+            } else if (user.business === 'n/a') {
+              showAddBusinessDialog(ctrl.user);
+            }
+          });
         }
-
       });
   }
 
@@ -73,9 +77,9 @@ function AppController($mdDialog, UserService,
       parent: angular.element(document.body),
       clickOutsideToClose: true,
       locals: {
-        tab: tab
+        user: user
       }
-    })
+    });
   }
 
   /*
