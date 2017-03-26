@@ -17,7 +17,9 @@ function AppController($mdDialog, UserService, FirebaseService) {
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
   ctrl.logout = logout;
+  ctrl.showEmailVerificationDialog = showEmailVerificationDialog;
   ctrl.user = null;
+  ctrl.emailVerified = true;
   /**
    * Initialization function
    */
@@ -42,6 +44,9 @@ function AppController($mdDialog, UserService, FirebaseService) {
     })
       .then(function() {
         ctrl.user = UserService.getUser();
+        if (ctrl.user.email && !ctrl.user.emailVerified) {
+          showEmailVerificationDialog();
+        }
       });
   }
 
@@ -52,5 +57,21 @@ function AppController($mdDialog, UserService, FirebaseService) {
   function logout() {
     FirebaseService.logout();
     ctrl.user = null;
+  }
+
+  function showEmailVerificationDialog() {
+    var confirm = $mdDialog.confirm()
+      .title('Would you like to verify your e-mail?')
+      .textContent('To verify your e-mail, just click OK, ' +
+        'otherwise click CANCEL.')
+      .ariaLabel('E-mail Verification Notice')
+      .ok('OK')
+      .cancel('CANCEL');
+
+    $mdDialog.show(confirm).then(function() {
+      FirebaseService.verifyEmailAddress();
+    }, function() {
+      ctrl.emailVerified = false;
+    });
   }
 }

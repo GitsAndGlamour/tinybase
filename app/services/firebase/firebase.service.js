@@ -1,7 +1,7 @@
 angular.module('firebase')
   .service('FirebaseService', FirebaseService);
-FirebaseService.$inject = ['$mdDialog', 'UserService'];
-function FirebaseService($mdDialog, UserService) {
+FirebaseService.$inject = ['$mdDialog', 'UserService', '$timeout'];
+function FirebaseService($mdDialog, UserService, $timeout) {
   var service = this;
 
   service.signUpViaEmail = function(email, password) {
@@ -20,7 +20,9 @@ function FirebaseService($mdDialog, UserService) {
             .ok('OK')
         );
       });
-    service.signInViaEmail(email, password);
+    $timeout(function() {
+      service.signInViaEmail(email, password);
+    }, 5000);
   };
 
   service.signInViaEmail = function(email, password) {
@@ -76,6 +78,34 @@ function FirebaseService($mdDialog, UserService) {
           .textContent('There was an error logging you out of your account. ' +
             'Please try again. ' + error.message)
           .ariaLabel('Email Log-out Result Alert')
+          .ok('OK')
+      );
+    });
+  };
+
+  service.verifyEmailAddress = function() {
+    var user = firebase.auth().currentUser;
+    user.sendEmailVerification().then(function() {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('')
+          .textContent('Your e-mail verification was successfully sent.')
+          .ariaLabel('Email Verification Result Alert')
+          .ok('OK')
+      );
+    }, function(error) {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('E-mail Verification Failure!')
+          .textContent('There was an error verifying your e-mail account. ' +
+            'Please try again. ' + error.message)
+          .ariaLabel('Email Verification Result Alert')
           .ok('OK')
       );
     });
