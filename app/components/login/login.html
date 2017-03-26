@@ -34,9 +34,10 @@
               </form>
             </div>
             <div layout="row" layout-align="center center">- or -</div>
-              <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-1 button-hover-text-white registration-buttons"
-              ng-click="facebookSignUp()">Sign-up via Facebook</md-button>
-              <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-2 button-hover-text-white registration-buttons"
+            <img class="facebook-button"
+                 ng-click="facebookSignUp()"
+                 src="https://scontent-mia1-2.xx.fbcdn.net/v/t39.2365-6/16344632_403881753293914_7761668832074137600_n.png?oh=217350fa6eeebc1fb07013b037d135f4&amp;oe=596F06ED"/>
+            <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-2 button-hover-text-white registration-buttons"
               ng-click="googleSignUp()">Sign-up via Google</md-button>
           </md-content>
         </md-tab>
@@ -64,10 +65,11 @@
               </form>
             </div>
             <div layout="row" layout-align="center center">- or -</div>
-            <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-1 button-hover-text-white registration-buttons"
-                       ng-click="facebookSignUp()">Log in via Facebook</md-button>
+            <img class="facebook-button"
+                 ng-click="facebookLogin()"
+                 src="https://scontent-mia1-2.xx.fbcdn.net/v/t39.2365-6/16344632_403881753293914_7761668832074137600_n.png?oh=217350fa6eeebc1fb07013b037d135f4&amp;oe=596F06ED"/>
             <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-2 button-hover-text-white registration-buttons"
-                       ng-click="googleSignUp()">Log in via Google</md-button>
+                       ng-click="googleLogin()">Log in via Google</md-button>
           </md-content>
         </md-tab>
       </md-tabs>

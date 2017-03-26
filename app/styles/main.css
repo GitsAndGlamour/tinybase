@@ -215,7 +215,3 @@ html, body {
 .button-hover-text-white:hover, .button-hover-text-white:active {
   color: white !important;
 }
-
-.registration-buttons {
-  width: 90%;
-}
