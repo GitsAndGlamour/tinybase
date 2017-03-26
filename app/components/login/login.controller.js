@@ -4,11 +4,10 @@ angular.module('app')
 LoginController.$inject = ['tab',
   '$scope',
   '$mdDialog',
-  'FirebaseService',
-  'UserService'];
+  'FirebaseService'];
 
 function LoginController(tab, $scope, $mdDialog,
-                         FirebaseService, UserService) {
+                         FirebaseService) {
   $scope.selectedIndex = tab === 'signup' ? 0 : 1;
   $scope.$onInit = $onInit();
   $scope.cancel = cancel;
@@ -18,7 +17,6 @@ function LoginController(tab, $scope, $mdDialog,
   $scope.login = login;
   $scope.facebookLogin = facebookLogin;
   $scope.googleLogin = googleLogin;
-  $scope.logout = logout;
 
   function $onInit() {
   }
@@ -56,23 +54,7 @@ function LoginController(tab, $scope, $mdDialog,
   }
 
   function getUserData(authType) {
-    var user = FirebaseService.getCurrentUser();
-    user.authType = authType;
-    UserService.setUser(user);
+    FirebaseService.getCurrentUser(authType);
     $mdDialog.hide();
-  }
-
-  function logout() {
-    var user = UserService.getUser();
-    switch (user.authType) {
-      case 'e-mail': FirebaseService.logOutViaEmail();
-        break;
-      case 'google': FirebaseService.logOutViaGoogle();
-        break;
-      case 'facebook': FirebaseService.logOutViaFacebook();
-        break;
-      default:
-        break;
-    }
   }
 }

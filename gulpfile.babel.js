@@ -35,8 +35,9 @@ import gulpLoadPlugins       from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 
 var scaffolding = require('scaffolding-angular'),
-  order  = require('gulp-order'),
-  config = require('./gulp.config.json');
+    order       = require('gulp-order'),
+    config      = require('./gulp.config.json'),
+    cleanCss    = require('gulp-clean-css');
 
 const $      = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -88,19 +89,14 @@ gulp.task('styles', () => {
   // For best performance, don't add Sass partials to `gulp.src`
   return gulp.src([
     config.input.lib_sass,
-    config.input.source_sass,
-    config.input.source_css_main,
-    config.input.icons
+    config.input.source_sass
   ])
     .pipe($.newer(config.tmp.styles))
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      precision: 10
-    }).on('error', $.sass.logError))
-    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe($.sass())
+    .pipe($.concat('main.min.css'))
+    .pipe($.cleanCss())
     .pipe(gulp.dest(config.tmp.styles))
-    // Concatenate and minify styles
-    .pipe($.if('*.css', $.cssnano()))
     .pipe($.size({title: 'styles'}))
     .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest(config.output.styles))

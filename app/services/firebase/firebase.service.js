@@ -1,7 +1,7 @@
 angular.module('firebase')
   .service('FirebaseService', FirebaseService);
-FirebaseService.$inject = ['$mdDialog'];
-function FirebaseService($mdDialog) {
+FirebaseService.$inject = ['$mdDialog', 'UserService'];
+function FirebaseService($mdDialog, UserService) {
   var service = this;
 
   service.signUpViaEmail = function(email, password) {
@@ -58,7 +58,31 @@ function FirebaseService($mdDialog) {
     });
   };
 
-  service.getCurrentUser = function() {
-    return firebase.auth().currentUser;
+  service.logout = function() {
+    var user = UserService.getUser();
+    switch (user.authType) {
+      case 'e-mail':
+        service.signOutViaEmail();
+        break;
+      case 'google':
+        service.signOutViaGoogle();
+        break;
+      case 'facebook':
+        service.signOutViaFacebook();
+        break;
+      default:
+        break;
+    }
+  };
+
+  service.getCurrentUser = function(authType) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        user.authType = authType;
+        UserService.setUser(user);
+        console.log(UserService.getUser());
+      }
+      return null;
+    });
   };
 }
