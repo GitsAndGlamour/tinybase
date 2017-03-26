@@ -40,7 +40,30 @@ function FirebaseService($mdDialog, UserService) {
       });
   };
 
-  service.signOutViaEmail = function() {
+  service.signInViaFacebook = function(provider) {
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      var token = result.credential.accessToken;
+      var user = result.user;
+      console.log(token, user);
+      UserService.setUser(user);
+      console.log(user.email);
+      $mdDialog.hide();
+    }).catch(function(error) {
+      $mdDialog.hide();
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.body))
+          .clickOutsideToClose(true)
+          .title('Facebook Sign-in Failure!')
+          .textContent('There was an error logging into your ' +
+            'Facebook account. Please try again. ' + error.message)
+          .ariaLabel('Facebook Sign-in Result Alert')
+          .ok('OK')
+      );
+    });
+  };
+
+  service.logout = function() {
     firebase.auth().signOut().then(function() {
       UserService.setUser(null);
     }).catch(function(error) {
@@ -58,27 +81,9 @@ function FirebaseService($mdDialog, UserService) {
     });
   };
 
-  service.logout = function() {
-    var user = UserService.getUser();
-    switch (user.authType) {
-      case 'e-mail':
-        service.signOutViaEmail();
-        break;
-      case 'google':
-        service.signOutViaGoogle();
-        break;
-      case 'facebook':
-        service.signOutViaFacebook();
-        break;
-      default:
-        break;
-    }
-  };
-
-  service.getCurrentUser = function(authType) {
+  service.getCurrentUser = function() {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        user.authType = authType;
         UserService.setUser(user);
         console.log(UserService.getUser());
       }
