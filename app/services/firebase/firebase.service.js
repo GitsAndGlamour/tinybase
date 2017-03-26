@@ -40,7 +40,7 @@ function FirebaseService($mdDialog, UserService) {
       });
   };
 
-  service.signInViaFacebook = function(provider) {
+  service.signInViaPopup = function(provider, auth) {
     firebase.auth().signInWithPopup(provider).then(function(result) {
       var token = result.credential.accessToken;
       var user = result.user;
@@ -54,10 +54,10 @@ function FirebaseService($mdDialog, UserService) {
         $mdDialog.alert()
           .parent(angular.element(document.body))
           .clickOutsideToClose(true)
-          .title('Facebook Sign-in Failure!')
-          .textContent('There was an error logging into your ' +
-            'Facebook account. Please try again. ' + error.message)
-          .ariaLabel('Facebook Sign-in Result Alert')
+          .title(auth + ' Sign-in Failure!')
+          .textContent('There was an error logging into your ' + auth +
+            ' account. Please try again. ' + error.message)
+          .ariaLabel(auth + ' Sign-in Result Alert')
           .ok('OK')
       );
     });
