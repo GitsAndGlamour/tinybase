@@ -1,19 +1,23 @@
 angular.module('app')
    .controller('AppController', AppController);
 
-AppController.$inject = ['$mdDialog'];
+AppController.$inject = ['$mdDialog', 'UserService', 'FirebaseService'];
 
 /**
  * AppController handles the ui-view
  *
- * @param {Injector} $mdDialog Injector Module
+ * @param {Injector} $mdDialog Injector Module for dialog popups
+ * @param {Module} UserService Module that retains user data
+ * @param {Module} FirebaseService Module that makes service
+ * calls to Google Firebase API
  * @constructor
  */
-function AppController($mdDialog) {
+function AppController($mdDialog, UserService, FirebaseService) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
   ctrl.logout = logout;
+  ctrl.user = null;
   /**
    * Initialization function
    */
@@ -36,12 +40,9 @@ function AppController($mdDialog) {
         tab: tab
       }
     })
-      .then(function(answer) {
-        ctrl.status = 'You said the information was "' + answer + '".';
-      }, function() {
-        ctrl.status = 'You cancelled the dialog.';
+      .then(function() {
+        ctrl.user = UserService.getUser();
       });
-    console.log(ctrl.status, tab);
   }
 
   /*
@@ -49,6 +50,7 @@ function AppController($mdDialog) {
    to remove user Session data
    */
   function logout() {
-    console.log('Logout');
+    FirebaseService.logout();
+    ctrl.user = null;
   }
 }

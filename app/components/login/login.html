@@ -13,37 +13,71 @@
         <md-tab label="Sign Up">
           <md-content class="md-padding">
             <h1 class="md-display-2">Sign Up</h1>
-            <h4>Sign up via</h4>
-            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
-            ng-click="facebookSignUp()">Facebook</md-button>
-            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
-            ng-click="googleSignUp()">Google</md-button>
-            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
-            ng-click="signUp()">E-Mail</md-button>
+            <div>
+              <form name="emailSignUpForm">
+                <fieldset>
+                  <legend>E-Mail</legend>
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="images/icons/icon_email_dark.svg" class="email"></md-icon>
+                    <input ng-model="user.email" type="email" placeholder="Email" ng-required="true"
+                           required minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="images/icons/icon_closed_lock_full_dark.svg" class="password"></md-icon>
+                    <input ng-model="user.password" type="password" placeholder="Password" ng-required="true"
+                           minlength="8" maxlength="32">
+                  </md-input-container>
+                  <md-button layout="row" layout-align="center center"
+                             class="md-primary md-raised md-hue-3 registration-buttons"
+                  ng-click="signUp()">Sign-up via E-mail</md-button>
+                </fieldset>
+              </form>
+            </div>
+            <div layout="row" layout-align="center center">- or -</div>
+              <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-1 button-hover-text-white registration-buttons"
+              ng-click="facebookSignUp()">Sign-up via Facebook</md-button>
+              <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-2 button-hover-text-white registration-buttons"
+              ng-click="googleSignUp()">Sign-up via Google</md-button>
           </md-content>
         </md-tab>
         <md-tab label="Log In">
           <md-content class="md-padding">
             <h1 class="md-display-2">Log In</h1>
-            <h4>Log in via</h4>
-            <md-button layout="row" class="md-primary md-raised md-hue-1 button-hover-text-white signup-buttons"
-            ng-click="facebookLogin()">Facebook</md-button>
-            <md-button layout="row" class="md-primary md-raised md-hue-2 button-hover-text-white signup-buttons"
-            ng-click="googleLogin()">Google</md-button>
-            <md-button layout="row" class="md-primary md-raised md-hue-3 signup-buttons"
-            ng-click="login()">E-Mail</md-button></md-content>
+            <div>
+              <form name="emailLoginForm">
+                <fieldset>
+                  <legend>E-Mail</legend>
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="images/icons/icon_email_dark.svg" class="email"></md-icon>
+                    <input ng-model="user.email" type="email" placeholder="Email" ng-required="true"
+                           required minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <md-icon md-svg-src="images/icons/icon_closed_lock_full_dark.svg" class="password"></md-icon>
+                    <input ng-model="user.password" type="password" placeholder="Password" ng-required="true"
+                           minlength="8" maxlength="32">
+                  </md-input-container>
+                  <md-button layout="row" layout-align="center center"
+                             class="md-primary md-raised md-hue-3 registration-buttons"
+                             ng-click="login()">Log in via E-mail</md-button>
+                </fieldset>
+              </form>
+            </div>
+            <div layout="row" layout-align="center center">- or -</div>
+            <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-1 button-hover-text-white registration-buttons"
+                       ng-click="facebookSignUp()">Log in via Facebook</md-button>
+            <md-button layout="row" layout-align="center center" class="md-primary md-raised md-hue-2 button-hover-text-white registration-buttons"
+                       ng-click="googleSignUp()">Log in via Google</md-button>
+          </md-content>
         </md-tab>
       </md-tabs>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button ng-click="cancel()" >
+      <md-button ng-click="cancel()">
         Cancel
       </md-button>
-      <md-button ng-click="login()" style="margin-right:20px;" >
-        Go
-      </md-button>
+      <span flex></span>
     </md-dialog-actions>
   </form>
 </md-dialog>
