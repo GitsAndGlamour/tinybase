@@ -28,6 +28,9 @@ function DatabaseService(UserService) {
     return firebase.database().ref('/users/' + user.uid).once('value')
       .then(function(snapshot) {
         UserService.setData(snapshot.val());
+        console.log(snapshot.val());
+        console.log(UserService.getData());
+        return UserService.getData();
       });
   };
 }
