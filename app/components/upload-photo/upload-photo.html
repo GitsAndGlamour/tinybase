@@ -1,0 +1,44 @@
+<md-dialog aria-label="Upload a Photo for Your {{collection}}">
+  <form ng-cloak>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Upload a Photo for Your {{collection}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="images/icons/icon_close_light.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <form name="uploadPhotoForm">
+          <div layout-gt-xs="row">
+            <h3>Current Photo</h3>
+            <md-whiteframe class="md-whiteframe-4dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
+              <iframe src="{{photoUrl}}"></iframe>
+            </md-whiteframe>
+
+          </div>
+          <div layout-gt-sm="row">
+            <h3>Choose a new photo</h3>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Photo URL</label>
+                <input ng-model="photoUrl">
+              </md-input-container>
+          </div>
+        </form>
+      </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button ng-click="cancel()">
+        CANCEL
+      </md-button>
+      <md-button ng-click="submit()">
+        UPLOAD
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -30,6 +30,19 @@ function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
     console.log($scope.business);
     DatabaseService.createBusiness($scope.business, user);
     $mdDialog.hide();
+    showUploadPhotoDialog($scope.business, 'business');
+  }
 
+  function showUploadPhotoDialog(data, collection) {
+    $mdDialog.show({
+      controller: UploadPhotoController,
+      templateUrl: 'components/upload-photo/upload-photo.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+      locals: {
+        data: data,
+        collection: collection
+      }
+    });
   }
 }
