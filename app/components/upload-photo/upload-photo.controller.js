@@ -3,17 +3,23 @@ angular.module('app')
 
 UploadPhotoController.$inject = ['data', 'collection',
   '$scope',
-  '$mdDialog'];
+  '$mdDialog',
+  '$sce'];
 
-function UploadPhotoController(data, collection, $scope, $mdDialog) {
+function UploadPhotoController(data, collection, $scope, $mdDialog, $sce) {
   $scope.$onInit = $onInit();
   $scope.data = data;
   $scope.collection = collection;
   $scope.cancel = cancel;
   $scope.submit = submit;
-  $scope.photoUrl = 'images/business.png';
+  $scope.trustSrc = trustSrc;
+  $scope.photoUrl = {src: 'images/business.png', title: 'Uploaded Photo'};
 
   function $onInit() {
+  }
+
+  function trustSrc(src) {
+    return $sce.trustAsResourceUrl(src);
   }
 
   function cancel() {

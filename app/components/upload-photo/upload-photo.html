@@ -13,15 +13,15 @@
     <md-dialog-content>
       <div class="md-dialog-content">
         <form name="uploadPhotoForm">
+          <h3>Current Photo</h3>
           <div layout-gt-xs="row">
-            <h3>Current Photo</h3>
-            <md-whiteframe class="md-whiteframe-4dp" flex-sm="45" flex-gt-sm="35" flex-gt-md="25" layout layout-align="center center">
-              <iframe src="{{photoUrl}}"></iframe>
+            <md-whiteframe class="md-whiteframe-4dp" layout layout-align="center center">
+              <iframe class="iframe" ng-src="{{trustSrc(photoUrl.src)}}" title="{{photoUrl.title}}"></iframe>
             </md-whiteframe>
 
           </div>
+          <h3>Choose a new photo</h3>
           <div layout-gt-sm="row">
-            <h3>Choose a new photo</h3>
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Photo URL</label>
                 <input ng-model="photoUrl">
