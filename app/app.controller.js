@@ -1,29 +1,28 @@
 angular.module('app')
    .controller('AppController', AppController);
 
-AppController.$inject = ['$mdDialog', 'UserService', 'FirebaseService'];
+AppController.$inject = ['$mdDialog', 'BusinessService',
+  'UserService', 'FirebaseService', 'DatabaseService', '$timeout', '$state'];
 
-/**
- * AppController handles the ui-view
- *
- * @param {Injector} $mdDialog Injector Module for dialog popups
- * @param {Module} UserService Module that retains user data
- * @param {Module} FirebaseService Module that makes service
- * calls to Google Firebase API
- * @constructor
- */
-function AppController($mdDialog, UserService, FirebaseService) {
+function AppController($mdDialog, BusinessService, UserService,
+                       FirebaseService, DatabaseService, $timeout, $state) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
   ctrl.logout = logout;
   ctrl.showEmailVerificationDialog = showEmailVerificationDialog;
+  ctrl.showAddBusinessDialog = showAddBusinessDialog;
   ctrl.user = null;
+  ctrl.business = null;
   ctrl.emailVerified = true;
+  ctrl.userService = UserService;
   /**
    * Initialization function
    */
   function $onInit() {
+    if (ctrl.user === null) {
+      $state.go('home');
+    }
   }
 
   /**
@@ -43,11 +42,42 @@ function AppController($mdDialog, UserService, FirebaseService) {
     })
       .then(function() {
         ctrl.user = UserService.getUser();
-        if (ctrl.user.email && !ctrl.user.emailVerified) {
-          showEmailVerificationDialog();
+        if (ctrl.user.email) {
+          if (!ctrl.user.emailVerified) {
+            ctrl.emailVerified = false;
+          }
+          DatabaseService.getUser(ctrl.user).then(function(user) {
+            console.log(user, ctrl.user);
+            if (!user) {
+              DatabaseService.createUser(ctrl.user);
+              $timeout(function() {
+                ctrl.user.data = UserService.getData();
+              }, 5000);
+              showAddBusinessDialog(ctrl.user);
+            } else if (user.business === 'n/a') {
+              showAddBusinessDialog(ctrl.user);
+            } else {
+              ctrl.business = BusinessService.getBusiness();
+              console.log(ctrl.business);
+              $state.go('business', {businessId: ctrl.business.uid});
+            } if (!BusinessService.getBusiness()) {
+              ctrl.business = null;
+            }
+          });
         }
-        console.log(ctrl.user);
       });
+  }
+
+  function showAddBusinessDialog(user) {
+    $mdDialog.show({
+      controller: AddBusinessController,
+      templateUrl: 'components/add-business/add-business.html',
+      parent: angular.element(document.body),
+      clickOutsideToClose: true,
+      locals: {
+        user: user
+      }
+    });
   }
 
   /*
@@ -56,6 +86,8 @@ function AppController($mdDialog, UserService, FirebaseService) {
    */
   function logout() {
     FirebaseService.logout();
+    $state.go('home');
+    UserService.setUser(null);
     ctrl.user = null;
   }
 

@@ -54,11 +54,14 @@
             </div>
             <div layout="row">
               <small layout="column" ng-if="appCtrl.user.email" id="welcome-user-display">WELCOME {{appCtrl.user.email.toUpperCase()}}!
-                <a href="#" ng-click="appCtrl.showEmailVerificationDialog()" ng-show="!appCtrl.emailVerified">(Verify E-mail)</a>
+                <div layout="row">
+                  <a href="#" ng-click="appCtrl.showEmailVerificationDialog()" ng-show="!appCtrl.emailVerified" flex>(Verify E-mail)</a>
+                  <a href="#" ng-click="appCtrl.showAddBusinessDialog(appCtrl.user)" ng-show="appCtrl.business === null" flex>(Add Business)</a>
+                </div>
               </small>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
-              <md-button layout="column" ng-if="appCtrl.user" ng-click="appCtrl.logout()">logout</md-button>
+              <md-button layout="column" ng-if="appCtrl.user.email" ng-click="appCtrl.logout()">logout</md-button>
             </div>
           </div>
         </div>

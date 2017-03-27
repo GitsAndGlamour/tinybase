@@ -63,8 +63,8 @@ function LoginController(tab, $scope, $mdDialog,
     var confirm = $mdDialog.prompt()
       .title('What is your e-mail address?')
       .textContent('Please provide the e-mail address you signed up ' +
-        'with in order to help us locate your account and send you an ' +
-        'e-mail allowing you to reset your password.')
+        'with so we can send you an e-mail allowing you to reset your ' +
+        'password.')
       .placeholder('janedoe@tinybase.com')
       .ariaLabel('E-Mail')
       .initialValue('someone@gmail.com')

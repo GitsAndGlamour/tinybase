@@ -6,5 +6,9 @@ angular
       .state('home', {
         url: '/',
         template: '<home flex></home>'
+      })
+      .state('business', {
+        url: '/business/{businessUid}',
+        template: '<business flex></business>'
       });
   });
