@@ -22,9 +22,7 @@
               <md-input-container>
                 <label>Type</label>
                 <md-select ng-model="business.type" multiple>
-                  <md-optgroup label="Category 1">
-                    <md-option ng-value="sub-category">Sub-category 1</md-option>
-                  </md-optgroup>
+                    <md-option ng-repeat="category in categories" ng-value="category.category">{{category.description}}</md-option>
                 </md-select>
               </md-input-container>
             </div>
@@ -88,9 +86,9 @@
                   <input name="email" ng-model="business.email"
                          required minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
 
-                  <div class="hint" ng-show="showHints">How can we reach you?</div>
+                  <div class="hint" md-auto-hide="false">How can we reach you?</div>
 
-                  <div ng-messages="businessForm.email.$error" ng-hide="showHints">
+                  <div ng-messages="businessForm.email.$error" md-auto-hide="false">
                     <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
                       Your email must be between 10 and 100 characters long and look like an e-mail address.
                     </div>
@@ -105,9 +103,9 @@
                   <label>Phone Number</label>
                   <input name="phone" ng-model="business.phone" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" />
 
-                  <div class="hint" ng-show="showHints">(###) ###-####</div>
+                  <div class="hint" md-auto-hide="false">(###) ###-####</div>
 
-                  <div ng-messages="businessForm.phone.$error" ng-hide="showHints">
+                  <div ng-messages="businessForm.phone.$error" md-auto-hide="false">
                     <div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
                   </div>
                 </md-input-container>

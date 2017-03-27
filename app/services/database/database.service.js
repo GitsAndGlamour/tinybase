@@ -27,6 +27,8 @@ function DatabaseService(UserService) {
   service.getUser = function(user) {
     return firebase.database().ref('/users/' + user.uid).once('value')
       .then(function(snapshot) {
+        console.log(snapshot);
+        console.log(user.uid);
         UserService.setData(snapshot.val());
         console.log(snapshot.val());
         console.log(UserService.getData());
