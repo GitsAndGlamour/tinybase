@@ -9,8 +9,8 @@ AddBusinessController.$inject = ['user',
   'US_STATES',
   'BUSINESS_CATEGORIES'];
 
-function AddBusinessController(user, $scope, $mdDialog, BusinessService,
-                               DatabaseService, US_STATES,
+function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
+                               BusinessService, US_STATES,
                                BUSINESS_CATEGORIES) {
   $scope.$onInit = $onInit();
   $scope.states = US_STATES;
@@ -21,15 +21,14 @@ function AddBusinessController(user, $scope, $mdDialog, BusinessService,
   $scope.url = 'http://www.';
 
   function $onInit() {
-    console.log(user);
   }
 
   function cancel() {
     $mdDialog.hide();
+    BusinessService.setBusiness(null);
   }
 
   function submit() {
-    console.log($scope.business);
     var businessUid = DatabaseService.createBusiness($scope.business, user);
     $scope.business.uid = businessUid;
     BusinessService.setBusiness($scope.business);

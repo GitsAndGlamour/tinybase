@@ -7,11 +7,11 @@ UploadPhotoController.$inject = ['data', 'uid', 'collection',
   '$sce',
   'BusinessService',
   'UserService',
-  'DatabaseService'];
+  'DatabaseService', '$state'];
 
 function UploadPhotoController(data, uid, collection, $scope,
                                $mdDialog, $sce, BusinessService,
-                               UserService, DatabaseService) {
+                               UserService, DatabaseService, $state) {
   $scope.$onInit = $onInit();
   $scope.data = data;
   $scope.collection = collection;
@@ -29,6 +29,13 @@ function UploadPhotoController(data, uid, collection, $scope,
 
   function cancel() {
     $mdDialog.hide();
+    switch (collection) {
+      case 'business': $state.go('business', {businessId: uid});
+        break;
+      case 'profile': $state.go('profile', {userId: uid});
+        break;
+      default: return;
+    }
   }
 
   function submit() {
@@ -37,9 +44,11 @@ function UploadPhotoController(data, uid, collection, $scope,
     switch (collection) {
       case 'business': collectionName = 'businesses';
         BusinessService.setBusiness(data);
+        $state.go('business', {businessId: uid});
         break;
       case 'profile': collectionName = 'users';
         UserService.setUser(data);
+        $state.go('profile', {userId: uid});
         break;
       default: return;
     }

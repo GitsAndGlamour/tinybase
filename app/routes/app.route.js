@@ -8,7 +8,7 @@ angular
         template: '<home flex></home>'
       })
       .state('business', {
-      url: '/bisiness/{businessUid}',
-      template: '<business flex></business>'
-    });
+        url: '/business/{businessUid}',
+        template: '<business flex></business>'
+      });
   });

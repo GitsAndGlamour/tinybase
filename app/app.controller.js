@@ -4,35 +4,25 @@ angular.module('app')
 AppController.$inject = ['$mdDialog', 'BusinessService',
   'UserService', 'FirebaseService', 'DatabaseService', '$timeout', '$state'];
 
-/**
- * AppController handles the ui-view
- *
- * @param {Injector} $mdDialog Injector Module for dialog popups
- * @param {Module} UserService Module that retains user data
- * @param {Module} FirebaseService Module that makes service
- * calls to Google Firebase API
- * @param {Module} DatabaseService Module handles Firebase data storage
- * @param {Injector} $timeout Injector Module for delaying processes
- * @param {Injector} $state Injector Module for changing and setting states
- * with Angular UI Router
- * @param {Module} BusinessService that retains business data
- *
- * @constructor
- */
-function AppController($mdDialog, UserService, BusinessService,
+function AppController($mdDialog, BusinessService, UserService,
                        FirebaseService, DatabaseService, $timeout, $state) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
   ctrl.logout = logout;
   ctrl.showEmailVerificationDialog = showEmailVerificationDialog;
+  ctrl.showAddBusinessDialog = showAddBusinessDialog;
   ctrl.user = null;
+  ctrl.business = null;
   ctrl.emailVerified = true;
-  ctrl.businesses = [];
+  ctrl.userService = UserService;
   /**
    * Initialization function
    */
   function $onInit() {
+    if (ctrl.user === null) {
+      $state.go('home');
+    }
   }
 
   /**
@@ -52,18 +42,16 @@ function AppController($mdDialog, UserService, BusinessService,
     })
       .then(function() {
         ctrl.user = UserService.getUser();
-        console.log(ctrl.user);
         if (ctrl.user.email) {
           if (!ctrl.user.emailVerified) {
             ctrl.emailVerified = false;
           }
           DatabaseService.getUser(ctrl.user).then(function(user) {
-            console.log(user);
+            console.log(user, ctrl.user);
             if (!user) {
               DatabaseService.createUser(ctrl.user);
               $timeout(function() {
                 ctrl.user.data = UserService.getData();
-                console.log(ctrl.user);
               }, 5000);
               showAddBusinessDialog(ctrl.user);
             } else if (user.business === 'n/a') {
@@ -72,6 +60,8 @@ function AppController($mdDialog, UserService, BusinessService,
               ctrl.business = BusinessService.getBusiness();
               console.log(ctrl.business);
               $state.go('business', {businessId: ctrl.business.uid});
+            } if (!BusinessService.getBusiness()) {
+              ctrl.business = null;
             }
           });
         }
@@ -96,6 +86,8 @@ function AppController($mdDialog, UserService, BusinessService,
    */
   function logout() {
     FirebaseService.logout();
+    $state.go('home');
+    UserService.setUser(null);
     ctrl.user = null;
   }
 

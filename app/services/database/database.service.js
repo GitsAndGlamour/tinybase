@@ -34,6 +34,7 @@ function DatabaseService(UserService) {
   };
 
   service.createBusiness = function(business, user) {
+    console.log(business, user);
     var newBusinessKey = service.database.ref().child('businesses').push().key;
     user.data.business = newBusinessKey;
     service.update('businesses', newBusinessKey, business);

@@ -1,12 +1,12 @@
 angular.module('app')
     .controller('BusinessController', BusinessController);
-BusinessController.$inject = [];
+BusinessController.$inject = ['UserService', 'BusinessService'];
 
 /**
  * Home Controller for the home page
  * @constructor
  */
-function BusinessController() {
+function BusinessController(UserService, BusinessService) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
 
@@ -14,5 +14,10 @@ function BusinessController() {
    * Initialization
    */
   function $onInit() {
+    ctrl.user = UserService.getUser();
+    ctrl.business = BusinessService.getBusiness();
+    if (ctrl.user === null || ctrl.business === null) {
+      $state.go('home');
+    }
   }
 }

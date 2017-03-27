@@ -46,6 +46,7 @@ function FirebaseService($mdDialog, UserService, $timeout) {
       var user = result.user;
       UserService.setUser(user);
       $mdDialog.hide();
+      console.log(UserService.getUser());
     }).catch(function(error) {
       $mdDialog.hide();
       $mdDialog.show(
@@ -111,6 +112,7 @@ function FirebaseService($mdDialog, UserService, $timeout) {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         UserService.setUser(user);
+        console.log(UserService.getUser());
       }
       return null;
     });
