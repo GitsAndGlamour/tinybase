@@ -19,20 +19,30 @@ function DatabaseService(UserService) {
 
   service.createUser = function(user) {
     service.database.ref('users/' + user.uid).set({
+      displayName: user.displayName,
       email: user.email,
       business: 'n/a'
     });
   };
 
   service.getUser = function(user) {
-    return firebase.database().ref('/users/' + user.uid).once('value')
+    return service.database.ref('/users/' + user.uid).once('value')
       .then(function(snapshot) {
-        console.log(snapshot);
-        console.log(user.uid);
         UserService.setData(snapshot.val());
-        console.log(snapshot.val());
-        console.log(UserService.getData());
         return UserService.getData();
       });
+  };
+
+  service.createBusiness = function(business, user) {
+    var newBusinessKey = service.database.ref().child('businesses').push().key;
+    user.data.business = newBusinessKey;
+    service.update('businesses', newBusinessKey, business);
+    service.update('users', user.uid, user.data);
+  };
+
+  service.update = function(collection, key, data) {
+    var updates = {};
+    updates['/' + collection + '/' + key] = data;
+    return service.database.ref().update(updates);
   };
 }

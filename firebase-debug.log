@@ -5,12 +5,12 @@
 [debug] Node Version: v7.4.0
 [debug] Time:         Fri Mar 24 2017 21:05:32 GMT-0400 (EDT)
 [debug] ----------------------------------------------------------------------
-[debug] 
+[debug]
 [info] Starting Firebase development server...
-[info] 
+[info]
 [info] Project Directory: /Users/ORW6984/Documents/Projects/tinybase
 [info] Public Directory: dist
-[info] 
+[info]
 [info] Server listening at: http://localhost:5000
 [debug] ----------------------------------------------------------------------
 [debug] Command:      /usr/local/Cellar/node/7.4.0/bin/node /usr/local/bin/firebase serve
@@ -19,12 +19,12 @@
 [debug] Node Version: v7.4.0
 [debug] Time:         Sat Mar 25 2017 09:41:00 GMT-0400 (EDT)
 [debug] ----------------------------------------------------------------------
-[debug] 
+[debug]
 [info] Starting Firebase development server...
-[info] 
+[info]
 [info] Project Directory: /Users/ORW6984/Documents/Projects/tinybase
 [info] Public Directory: dist
-[info] 
+[info]
 [info] Server listening at: http://localhost:5000
 [debug] ----------------------------------------------------------------------
 [debug] Command:      /usr/local/Cellar/node/7.4.0/bin/node /usr/local/bin/firebase serve
@@ -33,12 +33,12 @@
 [debug] Node Version: v7.4.0
 [debug] Time:         Sun Mar 26 2017 08:32:47 GMT-0400 (EDT)
 [debug] ----------------------------------------------------------------------
-[debug] 
+[debug]
 [info] Starting Firebase development server...
-[info] 
+[info]
 [info] Project Directory: /Users/ORW6984/Documents/Projects/tinybase
 [info] Public Directory: dist
-[info] 
+[info]
 [info] Server listening at: http://localhost:5000
 [debug] ----------------------------------------------------------------------
 [debug] Command:      /usr/local/Cellar/node/7.4.0/bin/node /usr/local/bin/firebase serve
@@ -47,10 +47,10 @@
 [debug] Node Version: v7.4.0
 [debug] Time:         Sun Mar 26 2017 22:26:46 GMT-0400 (EDT)
 [debug] ----------------------------------------------------------------------
-[debug] 
+[debug]
 [info] Starting Firebase development server...
-[info] 
+[info]
 [info] Project Directory: /Users/ORW6984/Documents/Projects/tinybase
 [info] Public Directory: dist
-[info] 
+[info]
 [info] Server listening at: http://localhost:5000

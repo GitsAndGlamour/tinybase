@@ -58,7 +58,7 @@
               </small>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('signup')">signup</md-button>
               <md-button layout="column" ng-if="appCtrl.user.email == null" ng-click="appCtrl.showLoginDialog('login')">login</md-button>
-              <md-button layout="column" ng-if="appCtrl.user" ng-click="appCtrl.logout()">logout</md-button>
+              <md-button layout="column" ng-if="appCtrl.user.email" ng-click="appCtrl.logout()">logout</md-button>
             </div>
           </div>
         </div>

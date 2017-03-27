@@ -15,6 +15,8 @@ function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
   $scope.cancel = cancel;
   $scope.submit = submit;
   $scope.categories = BUSINESS_CATEGORIES;
+  $scope.facebookUrl = 'http://www.facebook.com/';
+  $scope.url = 'http://www.';
 
   function $onInit() {
     console.log(user);
@@ -26,6 +28,8 @@ function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
 
   function submit() {
     console.log($scope.business);
-    DatabaseService.createBusiness($scope.business);
+    DatabaseService.createBusiness($scope.business, user);
+    $mdDialog.hide();
+
   }
 }
