@@ -1,8 +1,8 @@
 angular.module('app')
    .controller('AppController', AppController);
 
-AppController.$inject = ['$mdDialog',
-  'UserService', 'FirebaseService', 'DatabaseService', '$timeout'];
+AppController.$inject = ['$mdDialog', 'BusinessService',
+  'UserService', 'FirebaseService', 'DatabaseService', '$timeout', '$state'];
 
 /**
  * AppController handles the ui-view
@@ -13,11 +13,14 @@ AppController.$inject = ['$mdDialog',
  * calls to Google Firebase API
  * @param {Module} DatabaseService Module handles Firebase data storage
  * @param {Injector} $timeout Injector Module for delaying processes
+ * @param {Injector} $state Injector Module for changing and setting states
+ * with Angular UI Router
+ * @param {Module} BusinessService that retains business data
  *
  * @constructor
  */
-function AppController($mdDialog, UserService,
-                       FirebaseService, DatabaseService, $timeout) {
+function AppController($mdDialog, UserService, BusinessService,
+                       FirebaseService, DatabaseService, $timeout, $state) {
   var ctrl = this;
   ctrl.$onInit = $onInit;
   ctrl.showLoginDialog = showLoginDialog;
@@ -25,6 +28,7 @@ function AppController($mdDialog, UserService,
   ctrl.showEmailVerificationDialog = showEmailVerificationDialog;
   ctrl.user = null;
   ctrl.emailVerified = true;
+  ctrl.businesses = [];
   /**
    * Initialization function
    */
@@ -64,6 +68,10 @@ function AppController($mdDialog, UserService,
               showAddBusinessDialog(ctrl.user);
             } else if (user.business === 'n/a') {
               showAddBusinessDialog(ctrl.user);
+            } else {
+              ctrl.business = BusinessService.getBusiness();
+              console.log(ctrl.business);
+              $state.go('business', {businessId: ctrl.business.uid});
             }
           });
         }

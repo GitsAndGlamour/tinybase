@@ -5,11 +5,13 @@ AddBusinessController.$inject = ['user',
   '$scope',
   '$mdDialog',
   'DatabaseService',
+  'BusinessService',
   'US_STATES',
   'BUSINESS_CATEGORIES'];
 
-function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
-                               US_STATES, BUSINESS_CATEGORIES) {
+function AddBusinessController(user, $scope, $mdDialog, BusinessService,
+                               DatabaseService, US_STATES,
+                               BUSINESS_CATEGORIES) {
   $scope.$onInit = $onInit();
   $scope.states = US_STATES;
   $scope.cancel = cancel;
@@ -28,12 +30,14 @@ function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
 
   function submit() {
     console.log($scope.business);
-    DatabaseService.createBusiness($scope.business, user);
+    var businessUid = DatabaseService.createBusiness($scope.business, user);
+    $scope.business.uid = businessUid;
+    BusinessService.setBusiness($scope.business);
     $mdDialog.hide();
-    showUploadPhotoDialog($scope.business, 'business');
+    showUploadPhotoDialog($scope.business, businessUid, 'business');
   }
 
-  function showUploadPhotoDialog(data, collection) {
+  function showUploadPhotoDialog(data, uid, collection) {
     $mdDialog.show({
       controller: UploadPhotoController,
       templateUrl: 'components/upload-photo/upload-photo.html',
@@ -41,6 +45,7 @@ function AddBusinessController(user, $scope, $mdDialog, DatabaseService,
       clickOutsideToClose: true,
       locals: {
         data: data,
+        uid: uid,
         collection: collection
       }
     });

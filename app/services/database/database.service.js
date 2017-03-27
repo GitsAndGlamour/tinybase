@@ -38,6 +38,7 @@ function DatabaseService(UserService) {
     user.data.business = newBusinessKey;
     service.update('businesses', newBusinessKey, business);
     service.update('users', user.uid, user.data);
+    return newBusinessKey;
   };
 
   service.update = function(collection, key, data) {

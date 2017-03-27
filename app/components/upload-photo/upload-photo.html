@@ -16,7 +16,7 @@
           <h3>Current Photo</h3>
           <div layout-gt-xs="row">
             <md-whiteframe class="md-whiteframe-4dp" layout layout-align="center center">
-              <iframe class="iframe" ng-src="{{trustSrc(photoUrl.src)}}" title="{{photoUrl.title}}"></iframe>
+              <img class="upload-photo" ng-src="{{trustSrc(photoUrl.src)}}" title="{{photoUrl.title}}"/>
             </md-whiteframe>
 
           </div>
@@ -24,8 +24,12 @@
           <div layout-gt-sm="row">
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Photo URL</label>
-                <input ng-model="photoUrl">
+                <input ng-model="photoUrl.src">
               </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+              <label>Photo Title</label>
+              <input ng-model="photoUrl.title">
+            </md-input-container>
           </div>
         </form>
       </div>
