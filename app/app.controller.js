@@ -20,6 +20,7 @@ function AppController($mdDialog, BusinessService, UserService,
    * Initialization function
    */
   function $onInit() {
+    ctrl.runCircular = false;
     if (ctrl.user === null) {
       $state.go('home');
     }
@@ -40,32 +41,57 @@ function AppController($mdDialog, BusinessService, UserService,
         tab: tab
       }
     })
-      .then(function() {
+    .then(function() {
+      ctrl.runCircular = true;
+      $timeout(function() {
         ctrl.user = UserService.getUser();
         if (ctrl.user.email) {
-          if (!ctrl.user.emailVerified) {
-            ctrl.emailVerified = false;
-          }
-          DatabaseService.getUser(ctrl.user).then(function(user) {
-            console.log(user, ctrl.user);
-            if (!user) {
-              DatabaseService.createUser(ctrl.user);
-              $timeout(function() {
-                ctrl.user.data = UserService.getData();
-              }, 5000);
-              showAddBusinessDialog(ctrl.user);
-            } else if (user.business === 'n/a') {
-              showAddBusinessDialog(ctrl.user);
+          ctrl.emailVerified = checkIfEmailIsVerified(ctrl.user.email);
+        } if (ctrl.user) {
+          populateUserAndBusinessData(ctrl.user);
+        }
+      }, 5000);
+    });
+  }
+
+  function checkIfEmailIsVerified(email) {
+    if (!email) {
+      return false;
+    }
+    return true;
+  }
+
+  function populateUserAndBusinessData(user) {
+    DatabaseService.getUser(user).then(function(data) {
+      if (data === null) {
+        DatabaseService.createUser(user);
+        $timeout(function() {
+          DatabaseService.getUser(user).then(function(response) {
+            UserService.setData(response);
+            var userProfile = UserService.getUser();
+            console.log(userProfile);
+            ctrl.business = userProfile.data.business;
+            if (ctrl.business === 'n/a') {
+              ctrl.runCircular = false;
+              showAddBusinessDialog(userProfile);
             } else {
-              ctrl.business = BusinessService.getBusiness();
-              console.log(ctrl.business);
-              $state.go('business', {businessId: ctrl.business.uid});
-            } if (!BusinessService.getBusiness()) {
-              ctrl.business = null;
+              ctrl.runCircular = false;
+              routeToBusinessState(userProfile);
             }
           });
-        }
-      });
+        }, 5000);
+      } else {
+        ctrl.business = user.data.business;
+        ctrl.runCircular = false;
+        routeToBusinessState(user);
+      }
+    });
+  }
+
+  function routeToBusinessState(user) {
+    var businessUid = user.data.business;
+    DatabaseService.getBusiness(businessUid);
+    $state.go('business', {businessId: businessUid});
   }
 
   function showAddBusinessDialog(user) {

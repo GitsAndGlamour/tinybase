@@ -25,6 +25,7 @@ function FirebaseService($mdDialog, UserService, $timeout) {
   };
 
   service.signInViaEmail = function(email, password) {
+    console.log('Sign up via e-mail firebase call...');
     firebase.auth().signInWithEmailAndPassword(email, password)
       .catch(function(error) {
         $mdDialog.hide();
@@ -109,12 +110,13 @@ function FirebaseService($mdDialog, UserService, $timeout) {
   };
 
   service.getCurrentUser = function() {
+    console.log('Get Current User...');
     firebase.auth().onAuthStateChanged(function(user) {
+      console.log('Current User Authorized: ', user);
       if (user) {
         UserService.setUser(user);
-        console.log(UserService.getUser());
+        console.log('Retrieved user: ', UserService.getUser());
       }
-      return null;
     });
   };
 

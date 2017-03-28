@@ -1,2 +1,2 @@
 angular
-  .module('util', ['constants']);
+  .module('util', ['constants', 'functions']);

@@ -1,1 +1,3 @@
 <h1 layout="row" layout-align="center center">Welcome to your business home page for {{$ctrl.business.name}}!</h1>
+
+<img class="upload-photo" ng-src="{{trustSrc($ctrl.business.photoUrl.src)}}" title="{{$ctrl.business.photoUrl.title}}"/>

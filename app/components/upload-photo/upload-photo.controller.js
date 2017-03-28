@@ -4,13 +4,13 @@ angular.module('app')
 UploadPhotoController.$inject = ['data', 'uid', 'collection',
   '$scope',
   '$mdDialog',
-  '$sce',
+  'UtilityService',
   'BusinessService',
   'UserService',
   'DatabaseService', '$state'];
 
 function UploadPhotoController(data, uid, collection, $scope,
-                               $mdDialog, $sce, BusinessService,
+                               $mdDialog, UtilityService, BusinessService,
                                UserService, DatabaseService, $state) {
   $scope.$onInit = $onInit();
   $scope.data = data;
@@ -24,7 +24,7 @@ function UploadPhotoController(data, uid, collection, $scope,
   }
 
   function trustSrc(src) {
-    return $sce.trustAsResourceUrl(src);
+    return UtilityService.trustSrc(src);
   }
 
   function cancel() {

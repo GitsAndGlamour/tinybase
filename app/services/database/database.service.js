@@ -1,7 +1,7 @@
 angular.module('database')
   .service('DatabaseService', DatabaseService);
-DatabaseService.$inject = ['UserService'];
-function DatabaseService(UserService) {
+DatabaseService.$inject = ['UserService', 'BusinessService'];
+function DatabaseService(UserService, BusinessService) {
   var service = this;
   service.$onInit = $onInit();
 
@@ -23,6 +23,7 @@ function DatabaseService(UserService) {
       email: user.email,
       business: 'n/a'
     });
+    console.log('Created user...');
   };
 
   service.getUser = function(user) {
@@ -30,6 +31,15 @@ function DatabaseService(UserService) {
       .then(function(snapshot) {
         UserService.setData(snapshot.val());
         return UserService.getData();
+      });
+  };
+
+  service.getBusiness = function(uid) {
+    console.log('Business UID: ', uid);
+    return service.database.ref('/businesses/' + uid).once('value')
+      .then(function(snapshot) {
+        BusinessService.setBusiness(snapshot.val());
+        return BusinessService.getBusiness();
       });
   };
 
