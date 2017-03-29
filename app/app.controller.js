@@ -91,6 +91,7 @@ function AppController($mdDialog, BusinessService, UserService,
   function routeToBusinessState(user) {
     var businessUid = user.data.business;
     DatabaseService.getBusiness(businessUid);
+    console.log(BusinessService.getBusiness());
     $state.go('business', {businessId: businessUid});
   }
 

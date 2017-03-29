@@ -39,6 +39,7 @@ function DatabaseService(UserService, BusinessService) {
     return service.database.ref('/businesses/' + uid).once('value')
       .then(function(snapshot) {
         BusinessService.setBusiness(snapshot.val());
+        console.log(BusinessService.getBusiness());
         return BusinessService.getBusiness();
       });
   };
