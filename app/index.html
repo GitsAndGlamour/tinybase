@@ -69,6 +69,9 @@
     </header>
     <section>
       <ui-view></ui-view>
+      <div ng-show="appCtrl.runCircular" layout="row" layout-sm="column" layout-align="space-around">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
     </section>
     <footer></footer>
   </main>

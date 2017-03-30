@@ -25,6 +25,7 @@ function LoginController(tab, $scope, $mdDialog,
   }
 
   function signUp() {
+    console.log('Sign Up via Email...');
     FirebaseService.signUpViaEmail($scope.user.email, $scope.user.password);
     getUserData();
   }
@@ -55,6 +56,7 @@ function LoginController(tab, $scope, $mdDialog,
   }
 
   function getUserData() {
+    console.log('Get user data...');
     FirebaseService.getCurrentUser();
     $mdDialog.hide();
   }

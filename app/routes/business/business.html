@@ -1,1 +1,29 @@
-<h1 layout="row" layout-align="center center">Welcome to your business home page for {{$ctrl.business.name}}!</h1>
+<section class="business-photo-section">
+  <img class="business-profile-photo" src="{{$ctrl.business.photoUrl.src}}" title="{{$ctrl.business.photoUrl.title}}"/>
+</section>
+<section class="business-metadata">
+  <h1 layout="row" layout-align="center center">{{$ctrl.business.name}}!</h1>
+  <p>
+    <md-icon md-svg-src="images/icons/icon_location_dark.svg" class="location_icon"></md-icon>
+    {{$ctrl.business.city}}, {{$ctrl.business.state}}
+  </p>
+  <p>
+    <small layout="row"><span layout="column" flex>phone</span>
+      <span layout="column"></span>
+    </small>
+    <small layout="row"><span layout="column" flex></span>
+      <span layout="column"></span>
+    </small>
+    <small layout="row"><span layout="column" flex></span>
+      <span layout="column"></span>
+    </small>
+    <small layout="row"><span layout="column" flex></span>
+      <span layout="column"></span>
+    </small>
+    <small layout="row"><span layout="column" flex></span>
+      <span layout="column"></span>
+    </small>
+
+  </p>
+</section>
+
