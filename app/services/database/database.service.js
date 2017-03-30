@@ -1,7 +1,7 @@
 angular.module('database')
   .service('DatabaseService', DatabaseService);
-DatabaseService.$inject = ['UserService', 'BusinessService'];
-function DatabaseService(UserService, BusinessService) {
+DatabaseService.$inject = ['UserService', 'BusinessService', '$q'];
+function DatabaseService(UserService, BusinessService, $q) {
   var service = this;
   service.$onInit = $onInit();
 
@@ -36,12 +36,26 @@ function DatabaseService(UserService, BusinessService) {
 
   service.getBusiness = function(uid) {
     console.log('Business UID: ', uid);
-    return service.database.ref('/businesses/' + uid).once('value')
-      .then(function(snapshot) {
-        BusinessService.setBusiness(snapshot.val());
-        console.log(BusinessService.getBusiness());
-        return BusinessService.getBusiness();
+    function getBusiness() {
+      return $q(function(resolve, reject) {
+        service.database.ref('/businesses/' + uid).once('value')
+          .then(function(snapshot) {
+            if (snapshot.val()) {
+              BusinessService.setBusiness(snapshot.val());
+              resolve(BusinessService.getBusiness());
+            } else {
+              BusinessService.setBusiness(null);
+              reject(BusinessService.getBusiness());
+            }
+          });
       });
+    }
+    var promise = getBusiness();
+    promise.then(function(response) {
+      console.log(response);
+    }, function(reason) {
+      console.log(reason);
+    });
   };
 
   service.createBusiness = function(business, user) {
